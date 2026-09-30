@@ -12,6 +12,8 @@ type ParallaxImageProps = {
   /** How far the photo drifts inside its frame, as a share of its height. */
   strength?: number;
   priority?: boolean;
+  /** JPEG quality for next/image; the hero uses a lower value to speed up LCP. */
+  quality?: number;
   className?: string;
 };
 
@@ -25,6 +27,7 @@ export function ParallaxImage({
   sizes,
   strength = 0.08,
   priority = false,
+  quality = 80,
   className = "",
 }: ParallaxImageProps) {
   const frame = useRef<HTMLDivElement>(null);
@@ -46,6 +49,7 @@ export function ParallaxImage({
           fill
           sizes={sizes}
           priority={priority}
+          quality={quality}
           placeholder="blur"
           className={styles.image}
         />

@@ -60,13 +60,13 @@ Para adicionar uma cidade, copie `phoenix-az.json`, troque os valores e rode `np
 
 ## Decisões de arquitetura
 
-- **Cálculo como função pura** usada pelo simulador, pela prévia da abertura, pelo FAQ e pelos metadados. As respostas do FAQ usam `{{tokens}}` em vez de números fixos, então nada na página pode discordar do simulador.
-- **Tudo o que é citável vem no HTML do servidor.** Abertura, passos, equipes, depoimentos e FAQ (`<details>`). O resultado do estado inicial do simulador também vem renderizado como frase.
-- **Atribuição de campanha.** UTM e `gclid`/`fbclid` ficam na sessão (o primeiro contato vale). Todo evento leva cidade e campanha. O link "Request a site visit" é montado no clique com a simulação atual e a campanha. Eventos: `page_view`, `sim_started`, `sim_result` (com pausa de 800 ms), `profile_selected`, `cta_click`, `booking_submitted`. Nenhum provedor de analytics foi escolhido.
-- **Pedido de visita com uma Server Action.** O enunciado dispensa agendamento e back-end, mas o funil da página termina num pedido, então `/schedule` tem um formulário curto (nome, telefone, bairro, horário) com validação acessível no servidor (Zod), erro por campo, foco no primeiro erro e estado de sucesso com referência. A Server Action valida, gera a referência e registra o pedido no log do servidor em JSON, com a simulação e a campanha anexadas: é isso que responde a pergunta de segunda-feira do enunciado. Não há banco nem envio de e-mail.
-- **Simulador em duas etapas.** As duas perguntas ficam em cima (perfis à esquerda, controles à direita no desktop) e o orçamento embaixo, em largura total: os quatro números primeiro, os avisos, depois o desenho do telhado, as linhas de preço e a barra da conta lado a lado.
-- **Celular primeiro.** No simulador, uma faixa com os quatro números fica presa ao topo enquanto os controles estão na tela. Barra fixa inferior com a chamada para ação, que some enquanto a abertura ou o fechamento estão visíveis.
-- **Animações.** Entrada escalonada na abertura, aparecer ao rolar em CSS puro, paralaxe nas fotos, números que transicionam. Tudo desliga com preferência por menos movimento.
+- O cálculo é uma função pura, usada pelo simulador, pelo FAQ, pelos metadados e pela Server Action do pedido. As respostas do FAQ usam `{{tokens}}` em vez de números fixos, então nada na página pode discordar do simulador.
+- Tudo o que é citável vem no HTML do servidor: abertura, passos, equipes, depoimentos e FAQ (`<details>`). O resultado do estado inicial do simulador também vem renderizado como frase.
+- Atribuição de campanha: UTM e `gclid`/`fbclid` ficam na sessão (o primeiro contato vale). Todo evento leva cidade e campanha. O link "Request a site visit" é montado no clique com a simulação atual e a campanha. Eventos: `page_view`, `sim_started`, `sim_result` (com pausa de 800 ms), `profile_selected`, `cta_click`, `booking_submitted`. Nenhum provedor de analytics foi escolhido.
+- Pedido de visita com uma Server Action. O enunciado dispensa agendamento e back-end, mas o funil da página termina num pedido, então `/schedule` tem um formulário curto (nome, telefone, bairro, horário) com validação acessível no servidor (Zod), erro por campo, foco no primeiro erro e estado de sucesso com referência. A Server Action valida, gera a referência e registra o pedido no log do servidor em JSON, com a simulação e a campanha anexadas: é isso que responde a pergunta de segunda-feira do enunciado. Não há banco nem envio de e-mail.
+- Simulador em duas etapas: as duas perguntas ficam em cima (perfis à esquerda, controles à direita no desktop) e o orçamento embaixo, em largura total: os quatro números primeiro, os avisos, depois o desenho do telhado, as linhas de preço e a barra da conta lado a lado.
+- Celular primeiro: no simulador, uma faixa com os quatro números fica presa ao topo enquanto os controles estão na tela. Barra fixa inferior com a chamada para ação, que some enquanto a abertura ou o fechamento estão visíveis.
+- Animações: entrada escalonada na abertura, aparecer ao rolar em CSS puro, paralaxe nas fotos, números que transicionam. Tudo desliga com preferência por menos movimento.
 
 ## Decisões de desenho
 
@@ -91,7 +91,7 @@ O desenho do telhado mostra um retângulo por painel. Quando o mínimo da cidade
 **1. O perfil de residência deve devolver a cobertura a 80%.**
 Eu tinha assumido que escolher um perfil só preenche a conta. Ao rodar a sequência do exemplo do enunciado no navegador, a quarta linha deu 9 painéis e US$ 7.796, não os 8 painéis e US$ 6.930 esperados. Motivo: a terceira linha deixa a cobertura em 100%, e um apartamento de US$ 90 a 100% pede 8,55 painéis, que arredondam para 9. A tabela só fecha se o perfil também volta a cobertura para 80%. Concluí que o perfil é um ponto de partida completo e implementei assim. As seis linhas do exemplo batem no navegador e num teste.
 
-**2. Escolha visual: a abertura e a cor vieram de referências, não de palpite.**
+**2. A abertura e a cor vieram de referências abertas e estudadas.**
 Duas versões anteriores foram descartadas. A primeira era genérica. A segunda seguia o tema escuro do sistema, o que deixava a página azul-marinho, e tinha uma abertura dividida que não convencia. Abri e capturei as aberturas de Palmetto, Otovo, Sunrun, Enpal, Octopus Energy, Svea Solar, 1KOMMA5, Enphase e as buscas por "solar landing page" no Behance e no Dribbble (prints em `referencias/design/`). O que elas têm em comum: uma fotografia real ocupando a abertura inteira e página clara. Adotei os dois pontos. Cheguei a colocar o controle da conta de luz na abertura, como a Palmetto faz, mas tirei: a página ficava com duas calculadoras, e o enunciado pede a abertura com proposta e chamada para ação e o simulador como segunda parte. A fonte foi escolhida numa comparação lado a lado de seis famílias (`referencias/prints/fontes-*.jpg`). Conferi o contraste de todos os pares de cor (todos passam AA) e a página em 390 e 1440 px.
 
 ## Suposições
@@ -127,9 +127,13 @@ Unsplash e Pexels, licenças de uso livre.
 
 `src/sections/Simulator/__tests__/Simulator.test.tsx` protege o que aparece na tela nas três situações do enunciado: o aviso do limite da economia com os dois valores, o aviso do mínimo de painéis com o número pedido e o desenho marcando o painel acrescentado, e a nota de que baixar a cobertura não muda o resultado.
 
+## Auditoria
+
+Lighthouse 12 contra o build de produção em 30/09/2026, página de Phoenix: celular 93 de desempenho e 100 em acessibilidade, boas práticas e SEO; desktop 100 nas quatro categorias. O único ponto abaixo de 90 no celular é o LCP da foto da abertura (3,1 s com rede 4G simulada). O axe-core (WCAG 2.2 AA e boas práticas) não encontrou violação na página nem no formulário; os 20 itens marcados para revisão manual são textos sobre a fotografia da abertura, que ficam sobre um véu escuro para manter o contraste.
+
 ## O que ficou pendente
 
-- Nenhuma medição de Lighthouse ou de Core Web Vitals foi feita.
+- O LCP no celular pode cair com uma foto de abertura mais leve ou um CDN de imagens.
 - Não há provedor de analytics escolhido; os eventos estão prontos para receber um.
 - O pedido de visita fica só no log do servidor. Um e-mail ou CRM entraria na mesma Server Action.
 - Não há tema escuro. Foi uma escolha: a página escura passava menos confiança.
