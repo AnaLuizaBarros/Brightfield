@@ -8,6 +8,7 @@ import { Assumptions } from "./parts/Assumptions";
 import { EstimateSheet } from "./parts/EstimateSheet";
 import { MiniSummary } from "./parts/MiniSummary";
 import { ProfilePicker } from "./parts/ProfilePicker";
+import { UsageReadout } from "./parts/UsageReadout";
 import styles from "./Simulator.module.scss";
 
 export function Simulator({ city }: { city: CityData }) {
@@ -39,11 +40,14 @@ function SimulatorSection() {
 
         <div className={styles.controls}>
           <MiniSummary result={result} />
-          <ProfilePicker
-            profiles={city.householdProfiles}
-            selectedIndex={simulator.profileIndex}
-            onSelect={simulator.selectProfile}
-          />
+          <div className={styles.home}>
+            <ProfilePicker
+              profiles={city.householdProfiles}
+              selectedIndex={simulator.profileIndex}
+              onSelect={simulator.selectProfile}
+            />
+            <UsageReadout />
+          </div>
           <div className={styles.sliders}>
             <RangeField
               id="monthly-bill"

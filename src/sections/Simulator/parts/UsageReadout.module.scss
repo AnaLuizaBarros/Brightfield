@@ -1,0 +1,44 @@
+@use "abstracts" as *;
+
+.readout {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem 0.75rem;
+  padding-top: 1rem;
+  border-top: 1px dashed var(--color-line);
+
+  div {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: flex-end;
+    gap: 0.25rem;
+    min-width: 0;
+  }
+
+  dt {
+    @include small;
+    color: var(--color-body);
+  }
+
+  dd {
+    @include figures;
+    color: var(--color-ink);
+    font-size: 1.0625rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+
+    @include up("sm") {
+      font-size: 1.25rem;
+    }
+  }
+
+  small {
+    @include figures;
+    display: block;
+    margin-top: 0.125rem;
+    color: var(--color-muted);
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+}

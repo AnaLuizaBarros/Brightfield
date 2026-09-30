@@ -2,7 +2,7 @@ import { AnimatedNumber } from "@/components/ui/AnimatedNumber";
 import { BookingLink } from "@/components/ui/Button";
 import { Notice } from "@/components/ui/Notice";
 import { useSimulator } from "@/features/simulator";
-import { formatInt, formatUsd, formatUsdCents, formatYears } from "@/lib/format";
+import { formatInt, formatPercent, formatUsd, formatUsdCents, formatYears } from "@/lib/format";
 import { BillBar } from "./BillBar";
 import styles from "./EstimateSheet.module.scss";
 import { MathBreakdown } from "./MathBreakdown";
@@ -11,6 +11,7 @@ import { PanelRoof } from "./PanelRoof";
 const WATTS_PER_KW = 1000;
 const formatPanels = (value: number) => formatInt(Math.round(value));
 const formatCredit = (value: number) => `-${formatUsd(value)}`;
+const MONTHS_PER_YEAR = 12;
 
 /**
  * The result, laid out like the estimate an installer would hand over.
@@ -121,6 +122,22 @@ export function EstimateSheet() {
         <div className={styles.column}>
           <h4>Your bill each month</h4>
           <BillBar monthlyBill={monthlyBill} result={result} />
+          <dl className={styles.extras}>
+            <div>
+              <dt>Over a year</dt>
+              <dd>
+                <AnimatedNumber value={result.monthlySavings * MONTHS_PER_YEAR} format={formatUsd} />
+                <small>saved</small>
+              </dd>
+            </div>
+            <div>
+              <dt>The array produces</dt>
+              <dd>
+                {formatPercent(result.systemCoverage)}
+                <small>of your usage</small>
+              </dd>
+            </div>
+          </dl>
         </div>
       </div>
 

@@ -6,14 +6,14 @@
 
 .sheet {
   display: grid;
-  gap: 2rem;
+  gap: 1.5rem;
   padding: 1.5rem 1.25rem;
   border-radius: var(--radius);
   background: var(--color-sheet);
   box-shadow: var(--shadow-sheet);
 
   @include up("md") {
-    padding: 2.5rem;
+    padding: 2rem 2.5rem;
   }
 }
 
@@ -82,8 +82,8 @@
 
 .working {
   display: grid;
-  gap: 2rem;
-  padding-top: 2rem;
+  gap: 1.75rem;
+  padding-top: 1.5rem;
   border-top: 1px dashed var(--color-line);
 
   @include up("lg") {
@@ -149,6 +149,40 @@
       font-size: 1.375rem;
       font-weight: 800;
     }
+  }
+}
+
+.extras {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px dashed var(--color-line);
+
+  div {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 0.25rem;
+  }
+
+  dt {
+    @include small;
+    color: var(--color-body);
+  }
+
+  dd {
+    @include figures;
+    color: var(--color-ink);
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  small {
+    margin-left: 0.3rem;
+    color: var(--color-muted);
+    font-size: 0.8125rem;
+    font-weight: 500;
   }
 }
 

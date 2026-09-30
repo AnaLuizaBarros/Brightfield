@@ -9,10 +9,10 @@
   @include container;
   @include section-space;
   display: grid;
-  gap: 2rem;
+  gap: 1.75rem;
 
   @include up("lg") {
-    gap: 2.5rem;
+    gap: 2rem;
   }
 }
 
@@ -34,13 +34,18 @@
 // The two questions. On desktop the profiles sit left and the sliders right.
 .controls {
   display: grid;
-  gap: 2rem;
+  gap: 1.75rem;
 
   @include up("lg") {
     grid-template-columns: minmax(0, 6fr) minmax(0, 6fr);
     align-items: start;
-    gap: 4rem;
+    gap: 3.5rem;
   }
+}
+
+.home {
+  display: grid;
+  gap: 1.5rem;
 }
 
 .sliders {
