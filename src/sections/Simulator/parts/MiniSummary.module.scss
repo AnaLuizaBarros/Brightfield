@@ -1,0 +1,37 @@
+@use "abstracts" as *;
+
+.summary {
+  position: sticky;
+  top: 0;
+  z-index: $z-sticky;
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  justify-content: space-between;
+  gap: 0.75rem;
+  // Bleeds to the screen edges so content does not show beside it.
+  margin-inline: calc(var(--gutter) * -1);
+  padding: 0.625rem var(--gutter);
+  background: var(--color-ink);
+  color: var(--color-paper);
+
+  @include up("lg") {
+    display: none;
+  }
+
+  div {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+
+  dt {
+    font-size: 0.6875rem;
+    opacity: 0.75;
+  }
+
+  dd {
+    @include figures;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+}

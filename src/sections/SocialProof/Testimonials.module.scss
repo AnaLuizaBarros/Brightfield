@@ -1,0 +1,53 @@
+@use "abstracts" as *;
+
+// One quote leads in display type; the other two sit beside it, smaller.
+
+.testimonials {
+  display: grid;
+  gap: 2.5rem;
+
+  @include up("lg") {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: 3rem 5rem;
+  }
+
+  figure {
+    display: grid;
+    gap: 1.25rem;
+    align-content: start;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-ink);
+  }
+
+  blockquote {
+    color: var(--color-ink);
+    font-size: 1.0625rem;
+    line-height: 1.55;
+  }
+
+  figcaption {
+    @include small;
+    display: grid;
+    color: var(--color-muted);
+
+    b {
+      color: var(--color-ink);
+      font-weight: 600;
+    }
+  }
+
+  figure:first-of-type {
+    @include up("lg") {
+      grid-row: span 2;
+    }
+
+    blockquote {
+      font-family: var(--font-display);
+      font-size: clamp(1.5rem, 1.1rem + 1.7vw, 2.5rem);
+      font-weight: 700;
+      line-height: 1.12;
+      letter-spacing: -0.025em;
+      text-wrap: balance;
+    }
+  }
+}

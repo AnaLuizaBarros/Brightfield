@@ -1,0 +1,85 @@
+@use "abstracts" as *;
+
+// Layout: a tall photo on the left that stays put while three ruled rows
+// scroll past on the right. The numerals are real order, so they are large.
+
+.section {
+  @include container;
+  @include section-space;
+  display: grid;
+  gap: 2.5rem;
+
+  @include up("lg") {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    align-items: start;
+    gap: 5rem;
+  }
+}
+
+.photo {
+  aspect-ratio: 3 / 2;
+
+  @include up("lg") {
+    position: sticky;
+    top: 2rem;
+    aspect-ratio: 4 / 5;
+  }
+}
+
+.content {
+  display: grid;
+  gap: 2.5rem;
+
+  h2 {
+    @include display-lg;
+    max-width: 14ch;
+  }
+}
+
+.list {
+  display: grid;
+
+  li {
+    display: grid;
+    grid-template-columns: 3rem minmax(0, 1fr);
+    gap: 0.5rem 1rem;
+    padding-block: 1.75rem;
+    border-top: 1px solid var(--color-ink);
+
+    @include up("md") {
+      grid-template-columns: 5rem minmax(0, 1fr) auto;
+      gap: 1.5rem;
+      padding-block: 2.25rem;
+    }
+  }
+
+  h3 {
+    @include display-md;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    max-width: 46ch;
+  }
+}
+
+.number {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 2rem + 2vw, 3.75rem);
+  font-weight: 800;
+  line-height: 0.85;
+  letter-spacing: -0.04em;
+  color: var(--color-sun-deep);
+}
+
+.duration {
+  @include label;
+  grid-column: 2;
+  color: var(--color-ink);
+
+  @include up("md") {
+    grid-column: 3;
+    padding-top: 0.375rem;
+    text-align: right;
+  }
+}

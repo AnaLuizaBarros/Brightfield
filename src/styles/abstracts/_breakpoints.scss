@@ -1,0 +1,22 @@
+@use "sass:map";
+
+$breakpoints: (
+  "sm": 40rem, // 640px
+  "md": 48rem, // 768px
+  "lg": 64rem, // 1024px
+  "xl": 80rem, // 1280px
+);
+
+/// Mobile-first media query: styles apply from the breakpoint up.
+@mixin up($name) {
+  @media (min-width: map.get($breakpoints, $name)) {
+    @content;
+  }
+}
+
+/// Styles that apply only below the breakpoint.
+@mixin down($name) {
+  @media (max-width: calc(map.get($breakpoints, $name) - 0.0625rem)) {
+    @content;
+  }
+}

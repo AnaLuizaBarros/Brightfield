@@ -1,0 +1,79 @@
+@use "abstracts" as *;
+
+// Layout: the heading holds the left column while the questions scroll.
+
+.section {
+  @include container;
+  @include section-space;
+  display: grid;
+  gap: 2.5rem;
+
+  @include up("lg") {
+    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+    align-items: start;
+    gap: 5rem;
+  }
+}
+
+.intro {
+  display: grid;
+  gap: 1.25rem;
+
+  @include up("lg") {
+    position: sticky;
+    top: 2rem;
+  }
+
+  h2 {
+    @include display-lg;
+  }
+
+  p {
+    max-width: 34ch;
+  }
+
+  a {
+    @include figures;
+    color: var(--color-ink);
+    font-weight: 600;
+    text-underline-offset: 4px;
+    white-space: nowrap;
+  }
+}
+
+.list {
+  border-bottom: 1px solid var(--color-ink);
+
+  details {
+    border-top: 1px solid var(--color-ink);
+  }
+
+  summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    min-height: 4.5rem;
+    padding-block: 1.25rem;
+
+    svg {
+      flex: none;
+      color: var(--color-sun-deep);
+      transition: transform var(--dur-base) var(--ease-out);
+    }
+  }
+
+  h3 {
+    @include display-md;
+  }
+
+  // The plus turns into a cross when the answer is open.
+  details[open] summary svg {
+    transform: rotate(45deg);
+  }
+
+  p {
+    max-width: 62ch;
+    padding-bottom: 1.75rem;
+  }
+}

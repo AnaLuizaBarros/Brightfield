@@ -1,0 +1,19 @@
+// :where() keeps these defaults at zero specificity, so the class passed in
+// by a section always wins, whatever order the stylesheets load in.
+:where(.frame) {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--color-stone);
+}
+
+// Taller than the frame so the drift never exposes an edge.
+.drift {
+  position: absolute;
+  inset: -10% 0;
+  will-change: transform;
+}
+
+.image {
+  object-fit: cover;
+}

@@ -1,0 +1,7 @@
+// Global stylesheet, imported once in app/layout.tsx.
+// Everything else lives next to its component as a CSS module.
+@use "base/tokens";
+@use "base/reset";
+@use "base/base";
+@use "base/motion";
+@use "base/utilities";

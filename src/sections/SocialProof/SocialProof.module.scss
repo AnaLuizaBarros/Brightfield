@@ -1,0 +1,44 @@
+@use "abstracts" as *;
+
+.section {
+  background: var(--color-stone);
+}
+
+.inner {
+  @include container;
+  @include section-space;
+  display: grid;
+  gap: 3rem;
+
+  @include up("lg") {
+    gap: 4.5rem;
+  }
+}
+
+.intro {
+  display: grid;
+  gap: 1rem;
+  max-width: 44rem;
+
+  h2 {
+    @include display-lg;
+  }
+
+  p:last-child {
+    @include lead;
+    max-width: 52ch;
+  }
+}
+
+.tag {
+  @include label;
+  color: var(--color-muted);
+}
+
+.photo {
+  aspect-ratio: 4 / 3;
+
+  @include up("md") {
+    aspect-ratio: 21 / 9;
+  }
+}

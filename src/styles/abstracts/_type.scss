@@ -1,0 +1,55 @@
+// Type roles. Sizes are fluid between a 375px phone and a 1280px desktop.
+
+@mixin display-xl {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2.375rem, 1.6rem + 3.2vw, 4.25rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+@mixin display-lg {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1.875rem, 1.3rem + 2.5vw, 3.25rem);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+@mixin display-md {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.375rem, 1.2rem + 0.8vw, 1.75rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+@mixin lead {
+  font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem);
+  line-height: 1.5;
+}
+
+@mixin body {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+@mixin small {
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+/// Figures that line up in columns and do not jump while they change.
+@mixin figures {
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+@mixin label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}

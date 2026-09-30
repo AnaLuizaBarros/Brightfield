@@ -1,0 +1,33 @@
+@use "abstracts" as *;
+
+.bar {
+  position: fixed;
+  inset: auto 0 0;
+  z-index: $z-bar;
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.75rem var(--gutter);
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+  border-top: 1px solid var(--color-line);
+  background: var(--color-paper);
+  transition: transform var(--dur-base) var(--ease-out);
+
+  &[data-hidden="true"] {
+    transform: translateY(100%);
+  }
+
+  @include up("md") {
+    display: none;
+  }
+}
+
+.call {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 3.375rem;
+  border: 1.5px solid var(--color-ink);
+  border-radius: var(--radius);
+  color: var(--color-ink);
+}

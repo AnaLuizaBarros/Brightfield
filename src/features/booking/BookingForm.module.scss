@@ -1,0 +1,161 @@
+@use "abstracts" as *;
+
+.form {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.summary {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
+  border-left: 3px solid var(--color-error);
+  border-radius: var(--radius);
+  background: var(--color-sheet);
+  color: var(--color-ink);
+
+  svg {
+    flex: none;
+    color: var(--color-error);
+  }
+}
+
+.field {
+  display: grid;
+  gap: 0.5rem;
+
+  > label,
+  > legend {
+    color: var(--color-ink);
+    font-size: 0.9375rem;
+    font-weight: 600;
+
+    span {
+      color: var(--color-muted);
+      font-weight: 400;
+    }
+  }
+
+  > legend {
+    margin-bottom: 0.5rem;
+  }
+
+  input[type="text"],
+  input[type="tel"],
+  textarea {
+    width: 100%;
+    min-height: 3.25rem;
+    padding: 0.75rem 0.875rem;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    background: var(--color-sheet);
+    color: var(--color-ink);
+    font-size: 1rem;
+
+    &::placeholder {
+      color: var(--color-muted);
+    }
+
+    &:focus-visible {
+      @include focus-ring;
+      outline-offset: 0;
+      border-color: var(--color-ink);
+    }
+
+    &[aria-invalid="true"] {
+      border-color: var(--color-error);
+    }
+  }
+
+  textarea {
+    resize: vertical;
+  }
+}
+
+.options {
+  display: grid;
+  gap: 0.5rem;
+
+  @include up("sm") {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  min-height: 3.25rem;
+  padding: 0.5rem 0.875rem;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius);
+  background: var(--color-sheet);
+  color: var(--color-ink);
+  font-weight: 500;
+  cursor: pointer;
+
+  &:has(input:checked) {
+    border-color: var(--color-ink);
+    background: var(--color-ink);
+    color: var(--color-paper);
+  }
+
+  &:has(input:focus-visible) {
+    @include focus-ring;
+  }
+
+  input {
+    @include visually-hidden;
+  }
+}
+
+.error {
+  @include small;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  color: var(--color-error);
+}
+
+.submit {
+  display: grid;
+  gap: 0.75rem;
+
+  button:disabled {
+    cursor: wait;
+    opacity: 0.7;
+  }
+
+  p {
+    @include small;
+    color: var(--color-muted);
+  }
+}
+
+.success {
+  display: grid;
+  gap: 0.75rem;
+  padding: 1.5rem;
+  border-radius: var(--radius);
+  background: var(--color-sheet);
+  box-shadow: var(--shadow-sheet);
+
+  svg {
+    color: var(--color-sun);
+  }
+
+  h2 {
+    @include display-md;
+  }
+
+  b {
+    @include figures;
+    color: var(--color-ink);
+    font-weight: 700;
+  }
+
+  a {
+    color: var(--color-ink);
+    font-weight: 600;
+  }
+}

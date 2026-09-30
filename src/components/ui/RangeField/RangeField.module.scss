@@ -1,0 +1,107 @@
+@use "abstracts" as *;
+
+$thumb: 1.75rem;
+$track: 0.25rem;
+
+.field {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+
+  label {
+    color: var(--color-ink);
+    font-size: 0.9375rem;
+    font-weight: 600;
+  }
+
+  output {
+    @include figures;
+    color: var(--color-ink);
+    font-size: 1.75rem;
+    font-weight: 600;
+    line-height: 1;
+  }
+}
+
+@mixin track {
+  height: $track;
+  border-radius: var(--radius-round);
+}
+
+@mixin thumb {
+  width: $thumb;
+  height: $thumb;
+  border: 3px solid var(--color-ink);
+  border-radius: var(--radius-round);
+  background: var(--color-sun);
+  transition: transform var(--dur-fast) ease;
+}
+
+.range {
+  --fill: 50%;
+  appearance: none;
+  width: 100%;
+  // The input is 44px tall, so the whole strip is the touch target.
+  height: 2.75rem;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+  touch-action: pan-y;
+
+  &::-webkit-slider-runnable-track {
+    @include track;
+    background: linear-gradient(
+      to right,
+      var(--color-ink) var(--fill),
+      var(--color-line) var(--fill)
+    );
+  }
+
+  &::-moz-range-track {
+    @include track;
+    background: var(--color-line);
+  }
+
+  &::-moz-range-progress {
+    @include track;
+    background: var(--color-ink);
+  }
+
+  &::-webkit-slider-thumb {
+    @include thumb;
+    appearance: none;
+    margin-top: calc(($track - $thumb) / 2);
+  }
+
+  &::-moz-range-thumb {
+    @include thumb;
+    box-sizing: border-box;
+  }
+
+  &:active::-webkit-slider-thumb {
+    transform: scale(1.12);
+  }
+
+  &:active::-moz-range-thumb {
+    transform: scale(1.12);
+  }
+
+  &:focus-visible {
+    @include focus-ring;
+    outline-offset: 0;
+  }
+}
+
+.scale {
+  @include figures;
+  display: flex;
+  justify-content: space-between;
+  color: var(--color-muted);
+  font-size: 0.75rem;
+}

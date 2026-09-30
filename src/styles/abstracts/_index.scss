@@ -1,0 +1,6 @@
+// Sass-only helpers (no CSS output). Every module starts with:
+//   @use "abstracts" as *;
+@forward "breakpoints";
+@forward "layers";
+@forward "mixins";
+@forward "type";

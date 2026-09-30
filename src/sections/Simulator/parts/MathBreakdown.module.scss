@@ -1,0 +1,66 @@
+@use "abstracts" as *;
+
+.breakdown {
+  border-top: 1px dashed var(--color-line);
+  border-bottom: 1px dashed var(--color-line);
+
+  summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: 3.25rem;
+    color: var(--color-ink);
+    font-size: 0.9375rem;
+    font-weight: 600;
+
+    svg {
+      flex: none;
+      transition: transform var(--dur-base) var(--ease-out);
+    }
+  }
+
+  &[open] summary svg {
+    transform: rotate(180deg);
+  }
+
+  ol {
+    display: grid;
+    gap: 0.875rem;
+    padding-bottom: 1rem;
+    counter-reset: step;
+  }
+
+  li {
+    display: grid;
+    gap: 0.125rem;
+    padding-left: 2rem;
+    position: relative;
+    counter-increment: step;
+
+    // The order matters here, so the steps are numbered.
+    &::before {
+      @include figures;
+      content: counter(step);
+      position: absolute;
+      left: 0;
+      top: 0.125rem;
+      color: var(--color-muted);
+      font-size: 0.75rem;
+    }
+  }
+
+  span {
+    color: var(--color-ink);
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+
+  code {
+    @include figures;
+    color: var(--color-body);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+  }
+}

@@ -1,0 +1,51 @@
+@use "../abstracts" as *;
+
+html {
+  scroll-behavior: smooth;
+  // Room for the mobile action bar when jumping to an anchor.
+  scroll-padding-bottom: 6rem;
+}
+
+body {
+  @include body;
+  min-height: 100dvh;
+  background: var(--color-paper);
+  color: var(--color-body);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3 {
+  color: var(--color-ink);
+  font-family: var(--font-display);
+}
+
+:focus-visible {
+  @include focus-ring;
+}
+
+[id] {
+  scroll-margin-top: 1.5rem;
+}
+
+::selection {
+  background: var(--color-sun);
+  color: var(--color-night);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

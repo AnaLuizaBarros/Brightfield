@@ -1,0 +1,64 @@
+@use "abstracts" as *;
+
+// The header lies over the hero photograph, so its text is light.
+
+.header {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: $z-sticky;
+  color: var(--color-on-night);
+}
+
+.inner {
+  @include container;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: var(--header-height);
+}
+
+.home {
+  color: inherit;
+  text-decoration: none;
+
+  &:focus-visible {
+    @include focus-ring(var(--color-on-night));
+  }
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.phone {
+  @include figures;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  color: inherit;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  text-decoration: none;
+
+  @include hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  &:focus-visible {
+    @include focus-ring(var(--color-on-night));
+  }
+}
+
+// On phones the bottom bar carries this action.
+.cta {
+  display: none;
+
+  @include up("md") {
+    display: block;
+  }
+}

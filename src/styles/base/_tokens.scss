@@ -1,0 +1,63 @@
+// Design tokens as CSS custom properties. Components never use a raw color.
+// See .claude/skills/brightfield-brand-system for the reasoning.
+//
+// The page has one theme. It does not follow the system's dark mode: a dark
+// page read as less trustworthy for a home-services brand.
+
+:root {
+  color-scheme: light;
+
+  // Type
+  --font-sans: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-sans);
+
+  // Surfaces
+  --color-paper: #fbfbf9;
+  --color-stone: #f2f2ee;
+  --color-sheet: #ffffff;
+  --color-line: #dcdcd6;
+
+  // Text: neutral charcoal, no blue
+  --color-ink: #16181a;
+  --color-body: #3f4346;
+  --color-muted: #63676b;
+
+  // The one accent
+  --color-sun: #ff7a1a;
+  --color-sun-press: #e96500;
+  --color-sun-deep: #a84300;
+  --color-sun-wash: #ffebd9;
+  --color-on-sun: #16181a;
+
+  // A solar panel in the roof drawing
+  --color-panel: #1c2430;
+
+  // Text and lines over photographs and the closing band
+  --color-night: #16181a;
+  --color-on-night: #f7f7f5;
+  --color-on-night-soft: #b3b6b8;
+  --color-night-line: rgb(255 255 255 / 0.18);
+
+  --color-error: #a3261c;
+  --shadow-sheet: 0 1px 0 rgb(22 24 26 / 0.04), 0 24px 48px -24px rgb(22 24 26 / 0.25);
+
+  // Shape: one crisp radius for everything, round only for slider thumbs.
+  --radius: 4px;
+  --radius-round: 999px;
+
+  // Layout
+  --container: 78rem;
+  --gutter: 1.25rem;
+  --section-space: clamp(4rem, 3rem + 5vw, 7.5rem);
+  --header-height: 4.25rem;
+
+  // Motion
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast: 160ms;
+  --dur-base: 280ms;
+  --dur-slow: 700ms;
+
+  @media (min-width: 48rem) {
+    --gutter: 2.5rem;
+  }
+}

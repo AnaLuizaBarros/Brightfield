@@ -1,0 +1,67 @@
+@use "abstracts" as *;
+
+.section {
+  margin-top: var(--section-space);
+  background: var(--color-stone);
+}
+
+.inner {
+  @include container;
+  @include section-space;
+  display: grid;
+  gap: 2rem;
+
+  @include up("lg") {
+    gap: 2.5rem;
+  }
+}
+
+.intro {
+  display: grid;
+  gap: 1rem;
+  max-width: 44rem;
+
+  h2 {
+    @include display-lg;
+  }
+
+  p {
+    @include lead;
+    max-width: 52ch;
+  }
+}
+
+// The two questions. On desktop the profiles sit left and the sliders right.
+.controls {
+  display: grid;
+  gap: 2rem;
+
+  @include up("lg") {
+    grid-template-columns: minmax(0, 6fr) minmax(0, 6fr);
+    align-items: start;
+    gap: 4rem;
+  }
+}
+
+.sliders {
+  display: grid;
+  gap: 1.75rem;
+
+  @include up("lg") {
+    padding-top: 2.25rem; // lines the first slider up with the first profile row
+  }
+}
+
+.hint {
+  @include small;
+  margin-top: 0.5rem;
+  padding-left: 0.75rem;
+  border-left: 3px solid var(--color-sun);
+  color: var(--color-ink);
+}
+
+.note {
+  @include small;
+  max-width: 70ch;
+  color: var(--color-muted);
+}

@@ -1,0 +1,63 @@
+@use "abstracts" as *;
+
+// The page closes on a full-width photo of an array at dusk, under a scrim
+// dark enough for the text to pass contrast on any part of the image.
+
+.section {
+  position: relative;
+  display: grid;
+  overflow: hidden;
+  background: var(--color-night);
+  color: var(--color-on-night);
+  isolation: isolate;
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: 0;
+  background: var(--color-night);
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      100deg,
+      color-mix(in srgb, var(--color-night) 92%, transparent) 0%,
+      color-mix(in srgb, var(--color-night) 70%, transparent) 50%,
+      color-mix(in srgb, var(--color-night) 25%, transparent) 100%
+    );
+  }
+}
+
+.inner {
+  @include container;
+  display: grid;
+  gap: 1.5rem;
+  padding-block: clamp(5rem, 4rem + 8vw, 10rem);
+
+  h2 {
+    @include display-xl;
+    max-width: 13ch;
+    color: var(--color-on-night);
+  }
+
+  p {
+    @include lead;
+    max-width: 48ch;
+    color: var(--color-on-night-soft);
+  }
+}
+
+.actions {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+
+  @include up("sm") {
+    display: flex;
+    flex-wrap: wrap;
+  }
+}

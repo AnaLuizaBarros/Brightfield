@@ -1,0 +1,76 @@
+@use "abstracts" as *;
+
+.footer {
+  background: var(--color-night);
+  color: var(--color-on-night-soft);
+  border-top: 1px solid var(--color-night-line);
+}
+
+.inner {
+  @include container;
+  @include small;
+  display: grid;
+  gap: 2.5rem;
+  padding-block: 3.5rem;
+  // Clears the fixed action bar on phones.
+  padding-bottom: 8rem;
+
+  @include up("md") {
+    grid-template-columns: 1.4fr 1fr 1fr;
+    padding-bottom: 3.5rem;
+  }
+}
+
+.brand {
+  display: grid;
+  gap: 0.75rem;
+  align-content: start;
+  color: var(--color-on-night);
+
+  p {
+    color: var(--color-on-night-soft);
+  }
+}
+
+.column {
+  display: grid;
+  gap: 0.75rem;
+  align-content: start;
+
+  h2 {
+    @include label;
+    color: var(--color-on-night);
+  }
+
+  ul {
+    display: grid;
+    gap: 0.375rem;
+  }
+}
+
+.phone {
+  @include figures;
+  color: var(--color-on-night);
+  font-size: 1.125rem;
+  text-decoration: none;
+
+  @include hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  &:focus-visible {
+    @include focus-ring(var(--color-on-night));
+  }
+}
+
+.legal {
+  max-width: 70ch;
+  padding-top: 2rem;
+  border-top: 1px solid var(--color-night-line);
+  font-size: 0.8125rem;
+
+  @include up("md") {
+    grid-column: 1 / -1;
+  }
+}

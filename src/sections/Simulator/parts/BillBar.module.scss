@@ -1,0 +1,81 @@
+@use "abstracts" as *;
+
+$kinds: "covered", "remaining", "credit";
+
+/// How each part of the bill is drawn, in the bar and in its legend.
+@mixin fill($kind) {
+  @if $kind == "covered" {
+    background: var(--color-sun);
+  } @else if $kind == "remaining" {
+    background: var(--color-line);
+  } @else {
+    border: 1px dashed var(--color-sun-deep);
+    background: repeating-linear-gradient(
+      -45deg,
+      var(--color-sun-wash) 0 4px,
+      transparent 4px 8px
+    );
+  }
+}
+
+.bill {
+  display: grid;
+  gap: 0.625rem;
+}
+
+.bar {
+  display: flex;
+  gap: 2px;
+  height: 0.875rem;
+
+  span {
+    // --share is this segment's fraction of the whole bar.
+    flex: var(--share) 1 0%;
+    min-width: 0;
+    border-radius: 2px;
+    transition: flex-grow var(--dur-base) var(--ease-out);
+
+    @each $kind in $kinds {
+      &[data-kind="#{$kind}"] {
+        @include fill($kind);
+      }
+    }
+  }
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.25rem;
+  font-size: 0.8125rem;
+
+  div {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+
+    // Color key, matching the bar segment.
+    &::before {
+      content: "";
+      width: 0.625rem;
+      height: 0.625rem;
+      border-radius: 2px;
+    }
+
+    @each $kind in $kinds {
+      &[data-kind="#{$kind}"]::before {
+        @include fill($kind);
+      }
+    }
+  }
+
+  dt {
+    color: var(--color-body);
+  }
+
+  dd {
+    @include figures;
+    color: var(--color-ink);
+    font-weight: 600;
+  }
+}

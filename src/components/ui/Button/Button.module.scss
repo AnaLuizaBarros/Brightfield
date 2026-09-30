@@ -1,0 +1,87 @@
+@use "abstracts" as *;
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  min-height: 3.375rem;
+  padding: 0 1.5rem;
+  border: 1.5px solid transparent;
+  border-radius: var(--radius);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color var(--dur-fast) ease,
+    border-color var(--dur-fast) ease,
+    color var(--dur-fast) ease,
+    transform var(--dur-fast) ease;
+
+  &:active {
+    transform: translateY(1px);
+  }
+
+  svg {
+    flex: none;
+    transition: transform var(--dur-base) var(--ease-out);
+  }
+
+  @include hover {
+    svg {
+      transform: translateX(3px);
+    }
+  }
+}
+
+.primary {
+  background: var(--color-sun);
+  color: var(--color-on-sun);
+
+  @include hover {
+    background: var(--color-sun-press);
+  }
+
+  // The accent ring would vanish on the accent, so focus uses ink.
+  &:focus-visible {
+    @include focus-ring(var(--color-ink));
+  }
+}
+
+.secondary {
+  border-color: var(--color-ink);
+  color: var(--color-ink);
+
+  @include hover {
+    background: var(--color-ink);
+    color: var(--color-paper);
+  }
+}
+
+// For the dark closing band, where ink would disappear.
+.onNight {
+  border-color: var(--color-on-night-soft);
+  color: var(--color-on-night);
+
+  @include hover {
+    border-color: var(--color-on-night);
+  }
+
+  &:focus-visible {
+    @include focus-ring(var(--color-on-night));
+  }
+}
+
+.compact {
+  min-height: 2.75rem;
+  padding: 0 1.125rem;
+  font-size: 0.9375rem;
+}
+
+.block {
+  width: 100%;
+}

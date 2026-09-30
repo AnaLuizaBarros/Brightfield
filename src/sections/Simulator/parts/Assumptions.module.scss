@@ -1,0 +1,45 @@
+@use "abstracts" as *;
+
+.assumptions {
+  display: grid;
+  gap: 1.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--color-ink);
+
+  h3 {
+    @include label;
+    color: var(--color-ink);
+  }
+
+  dl {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem 1.25rem;
+
+    @include up("md") {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+  }
+
+  div {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: flex-end;
+    gap: 0.25rem;
+  }
+
+  dt {
+    @include small;
+    max-width: 20ch;
+    color: var(--color-body);
+  }
+
+  dd {
+    @include figures;
+    color: var(--color-ink);
+    font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+}
