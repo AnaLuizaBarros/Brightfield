@@ -7,6 +7,7 @@ import { formatPercent, formatUsd } from "@/lib/format";
 import { Assumptions } from "./parts/Assumptions";
 import { EstimateSheet } from "./parts/EstimateSheet";
 import { MiniSummary } from "./parts/MiniSummary";
+import { PriceTable } from "./parts/PriceTable";
 import { ProfilePicker } from "./parts/ProfilePicker";
 import { UsageReadout } from "./parts/UsageReadout";
 import styles from "./Simulator.module.scss";
@@ -86,6 +87,8 @@ function SimulatorSection() {
         <EstimateSheet />
 
         <Assumptions city={city} />
+
+        <PriceTable city={city} />
       </div>
     </section>
   );
