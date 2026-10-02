@@ -1,6 +1,7 @@
 import type { CityData } from "@/lib/city/schema";
 import type { ResolvedFaqItem } from "@/lib/city/faq";
-import { cityUrl, SITE } from "./site";
+import { cityPath, cityUrl } from "@/lib/city/paths";
+import { SITE } from "./site";
 
 type JsonLd = Record<string, unknown>;
 
@@ -56,7 +57,8 @@ export function buildStructuredData(
     ],
   };
 
-  return [business, faqPage, breadcrumbs];
+  // A trail of one is noise: skip it when the city is the site root.
+  return cityPath(city.slug) === "/" ? [business, faqPage] : [business, faqPage, breadcrumbs];
 }
 
 /** Escapes `<` so a value can never close the script tag. */

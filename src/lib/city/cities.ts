@@ -21,10 +21,18 @@ function parseCityFile(fileName: string): CityData {
 const loadAllCities = cache((): CityData[] =>
   readdirSync(CITIES_DIR)
     .filter((fileName) => fileName.endsWith(".json"))
+    .sort()
     .map(parseCityFile),
 );
 
 export const listCities = () => loadAllCities();
+
+/** The city served at the site root: the first data file by name. */
+export function homeCity(): CityData {
+  const [first] = loadAllCities();
+  if (!first) throw new Error("No city data files found in data/cities");
+  return first;
+}
 
 export const listCitySlugs = () => loadAllCities().map((city) => city.slug);
 

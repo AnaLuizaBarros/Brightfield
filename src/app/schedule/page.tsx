@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { SimplePage } from "@/components/layout/SimplePage";
 import { BookingForm } from "@/features/booking";
-import { getCity, listCities } from "@/lib/city/cities";
+import { getCity, homeCity } from "@/lib/city/cities";
+import { cityPath } from "@/lib/city/paths";
 import { BILL_RANGE, COVERAGE_RANGE } from "@/lib/city/schema";
 import { formatInt, formatUsd, formatUsdCents, formatYears } from "@/lib/format";
 import { calculate } from "@/lib/solar/calc";
@@ -35,8 +36,7 @@ const inRange = (value: number, min: number, max: number) =>
  */
 export default async function SchedulePage({ searchParams }: { searchParams: SearchParams }) {
   const params = await searchParams;
-  const city = getCity(first(params.city) ?? "") ?? listCities()[0];
-  if (!city) return null;
+  const city = getCity(first(params.city) ?? "") ?? homeCity();
 
   const billParam = Number(first(params.bill));
   const coverageParam = Number(first(params.coverage));
@@ -82,7 +82,7 @@ export default async function SchedulePage({ searchParams }: { searchParams: Sea
       </dl>
       <BookingForm city={city} carried={carried} />
       <p>
-        <a href={`/${city.slug}#simulator`}>Back to the estimate</a>
+        <a href={`${cityPath(city.slug)}#simulator`}>Back to the estimate</a>
       </p>
     </SimplePage>
   );

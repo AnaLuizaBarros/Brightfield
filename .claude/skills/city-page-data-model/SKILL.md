@@ -12,12 +12,15 @@ Swapping `phoenix-az.json` for another city file must produce that city's page w
 ```
 data/cities/phoenix-az.json
 src/lib/city/schema.ts        zod schema, exported CityData type
-src/lib/city/cities.ts        getCity(slug), listCities(), listCitySlugs()
+src/lib/city/cities.ts        getCity(slug), listCities(), listCitySlugs(), homeCity()
 src/lib/city/faq.ts           fills the {{tokens}} in FAQ answers
 src/lib/solar/calc.ts         calculate(), pure
 src/lib/seo/                  site constants, structured data
 src/lib/analytics/tracking.ts attribution and events
-src/app/[city]/page.tsx       server component, generateStaticParams + generateMetadata
+src/app/page.tsx              the home city (first data file by name) at the site root
+src/app/[city]/page.tsx       every other city; the home slug redirects to /
+src/features/city-page/       CityPage (six sections) and cityMetadata, shared by both routes
+src/lib/city/paths.ts         cityPath(slug), cityUrl(slug): "/" for the home city
 src/sections/<Name>/          page sections, each receives `city` as a prop
 src/components/<group>/<Name>/ shared pieces (ui, layout, brand, analytics)
 ```

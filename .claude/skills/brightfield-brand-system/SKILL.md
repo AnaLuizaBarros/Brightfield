@@ -12,7 +12,7 @@ City landing page for Phoenix homeowners, mostly on phones, arriving from ads an
 
 Dials (design-taste-frontend): variance 7, motion 5, density 4.
 
-## References studied (screenshots in `referencias/design/`)
+## References studied (screenshots in `references/design/`)
 | Site | What it does in the hero |
 |---|---|
 | Palmetto | Off-white page, very large display type, and the bill slider right in the hero |
@@ -64,7 +64,7 @@ Contrast, computed (WCAG AA is 4.5): ink on paper 17.2, body on paper 9.6, muted
 No raw color in a component. If a new color is needed, add a token.
 
 ## Type
-- **One family: Figtree.** Bricolage Grotesque with Geist Mono was rejected by the user. Figtree was picked from a side by side of six faces (`referencias/prints/fontes-*.jpg`); SunPower uses it too.
+- **One family: Figtree.** Bricolage Grotesque with Geist Mono was rejected by the user. Figtree was picked from a side by side of six faces (`references/screenshots/fonts-*.jpg`); SunPower uses it too.
 - Headings 700 and 800 with tracking -0.02 to -0.03em. Text 400 and 600.
 - Figures use tabular lining numerals (`figures` mixin), never a monospaced face.
 - Loaded with `next/font/google` in `app/layout.tsx` as `--font-figtree`; tokens expose `--font-sans` and `--font-display`.
@@ -119,4 +119,4 @@ Every trust element on the page is a field of the city file: rating, installs, c
 Short sentences. Dollars and kWh spelled out. No superlatives. Every claim sits next to its number. No em dashes in copy written for the template (the city data file is the client's text and is used as given).
 
 ## Figma handoff
-Variables from the token table (one mode), text styles from the type roles, radius 4, spacing 4/8/12/16/24/32/48/64/96. Competitor references are in `referencias/concorrentes/`.
+Variables from the token table (one mode), text styles from the type roles, radius 4, spacing 4/8/12/16/24/32/48/64/96. Competitor references are in `references/competitors/`.

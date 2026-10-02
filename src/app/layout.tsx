@@ -16,6 +16,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
   title: { default: SITE.name, template: `%s | ${SITE.name}` },
   applicationName: SITE.name,
+  robots: { index: SITE.indexable, follow: SITE.indexable },
 };
 
 export const viewport: Viewport = {

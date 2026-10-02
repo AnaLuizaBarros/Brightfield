@@ -1,118 +1,125 @@
-# Brightfield Solar: página de cidade (Caso 09)
+# Brightfield Solar: city page (Case 09)
 
-Página de cidade para uma instaladora de energia solar fictícia, com Phoenix como primeira cidade. Uma página, um modelo, cerca de 120 cidades: trocar o arquivo de dados troca a página, sem mexer no código.
+A city page for a fictional solar installer, with Phoenix as the first city. One page, one template, about 120 cities: swapping the data file swaps the page, with no code changes.
 
-- **Caso:** 09, página de cidade para uma instaladora de energia solar
-- **Tempo dedicado:** _preencher_
+- **Case:** 09, city page for a solar installer
+- **Time spent:** about 3 hours (confirmed in WakaTime)
+- **Live page:** https://brightfield.albseven.com/
+- **Design:** https://www.figma.com/design/vnKv1AC4WRuosvYIXz3He2/Alvorada-Dev (a cover, the design history with the rejected versions, and the built page as one desktop frame) and 390 px and 1440 px captures in `references/screenshots/`
 - **Stack:** Next.js (App Router), React, TypeScript, SCSS (global + CSS Modules), Motion, Phosphor Icons, Zod, Vitest
 
-## Como rodar
+## How to run
 
 ```bash
 npm install
-npm run dev        # http://localhost:3000/phoenix-az
-npm test           # 18 testes: cálculo, FAQ e os três avisos do simulador
+npm run dev        # http://localhost:3000
+npm test           # 18 tests: calculation, FAQ and the three simulator notices
 npm run build && npm start
 ```
 
-Rotas: `/` (lista de cidades), `/phoenix-az` (a página), `/phoenix-az/opengraph-image`, `/sitemap.xml`, `/robots.txt`, `/schedule` (pedido de visita técnica, com formulário e Server Action).
+Routes: `/` (the home city page, the first file in `data/cities` by file name), `/opengraph-image`, `/<slug>` (every other city; the home city's own slug redirects to `/`), `/sitemap.xml`, `/robots.txt`, `/schedule` (site-visit request, with a form and a Server Action).
 
-## Estrutura de pastas
+## Folder structure
 
 ```
-data/cities/<slug>.json          conteúdo e números de cada cidade
+data/cities/<slug>.json          content and numbers for each city
 src/
-  app/                           só rotas, metadados e composição da página
-  sections/<Nome>/               uma pasta por seção da página
-    <Nome>.tsx
-    <Nome>.module.scss
+  app/                           routes, metadata and page composition only
+  sections/<Name>/               one folder per page section
+    <Name>.tsx
+    <Name>.module.scss
     index.ts
-    Simulator/parts/             peças do simulador, cada uma com seu .module.scss
-    Simulator/__tests__/         testes de interface dos avisos
+    Simulator/parts/             simulator pieces, each with its own .module.scss
+    Simulator/__tests__/         interface tests for the notices
   components/
     ui/                          Button, RangeField, ParallaxImage, AnimatedNumber, Notice
     layout/                      Header, Footer, StickyCta, SimplePage
     brand/                       Wordmark
-    analytics/                   captura de campanha e page view
-  features/simulator/            estado do simulador (controles, folha e resumo do celular)
-  features/booking/              pedido de visita: schema Zod, Server Action, formulário
+    analytics/                   campaign capture and page view
+  features/city-page/            the six sections assembled, and a city's metadata
+  features/simulator/            simulator state (controls, estimate sheet, phone summary)
+  features/booking/              site-visit request: Zod schema, Server Action, form
   lib/
-    solar/                       calculate() e seus testes
-    city/                        schema, leitura dos arquivos, FAQ
-    seo/                         constantes do site, dados estruturados
-    analytics/                   atribuição e eventos
+    solar/                       calculate() and its tests
+    city/                        schema, file loading, FAQ
+    seo/                         site constants, structured data
+    analytics/                   attribution and events
     format.ts
   styles/
-    abstracts/                   só Sass, sem saída CSS: breakpoints, camadas, mixins, tipografia
-    base/                        tokens, reset, base, movimento, utilitários
-    global.scss                  importado uma vez em app/layout.tsx
-  assets/images/                 fotografias do modelo
-public/images/crews/             fotos das equipes, apontadas pelo arquivo de dados
+    abstracts/                   Sass only, no CSS output: breakpoints, layers, mixins, type
+    base/                        tokens, reset, base, motion, utilities
+    global.scss                  imported once in app/layout.tsx
+  assets/images/                 template photographs
+public/images/crews/             crew photos, referenced by the data file
 ```
 
-Regras de estilo:
-- Todo módulo começa com `@use "abstracts" as *;`.
-- Cores, raio, sombras e tempos de animação são tokens em `styles/base/_tokens.scss`. Nenhum componente usa cor solta.
-- Classes globais são só cinco: `.container`, `.visually-hidden`, `.skip-link`, `.reveal`, `.enter`. O resto é módulo.
-- `z-index` só a partir de `abstracts/_layers.scss`.
+Style rules:
+- Every module starts with `@use "abstracts" as *;`.
+- Colors, radius, shadows and animation durations are tokens in `styles/base/_tokens.scss`. No component uses a raw color.
+- There are only five global classes: `.container`, `.visually-hidden`, `.skip-link`, `.reveal`, `.enter`. Everything else is a module.
+- `z-index` only from `abstracts/_layers.scss`.
 
-Para adicionar uma cidade, copie `phoenix-az.json`, troque os valores e rode `npm run build`. Um campo inválido derruba o build e diz qual arquivo e qual campo.
+Environment variables (set them before `npm run build`, because they are baked in at build time; see `.env.example`):
+- `NEXT_PUBLIC_SITE_URL`: the public address, used for the canonical URL, the sitemap and the share image.
+- `NEXT_PUBLIC_ALLOW_INDEXING`: off by default. Unless it is `true`, every page ships `noindex, nofollow` and `robots.txt` blocks everything, so a portfolio copy on a subdomain does not compete with the real site or the ad landing pages.
 
-## Decisões de arquitetura
+To add a city, copy `phoenix-az.json`, change the values and run `npm run build`. The new city appears at `/<slug>`. The root page is always the first city by file name, so replacing the Phoenix file with another city's file swaps the root page without touching code. An invalid field fails the build and names the file and the field.
 
-- O cálculo é uma função pura, usada pelo simulador, pelo FAQ, pelos metadados e pela Server Action do pedido. As respostas do FAQ usam `{{tokens}}` em vez de números fixos, então nada na página pode discordar do simulador.
-- Tudo o que é citável vem no HTML do servidor: abertura, passos, equipes, depoimentos e FAQ (`<details>`). O resultado do estado inicial do simulador também vem renderizado como frase.
-- Atribuição de campanha: UTM e `gclid`/`fbclid` ficam na sessão (o primeiro contato vale). Todo evento leva cidade e campanha. O link "Request a site visit" é montado no clique com a simulação atual e a campanha. Eventos: `page_view`, `sim_started`, `sim_result` (com pausa de 800 ms), `profile_selected`, `cta_click`, `booking_submitted`. Nenhum provedor de analytics foi escolhido.
-- Pedido de visita com uma Server Action. O enunciado dispensa agendamento e back-end, mas o funil da página termina num pedido, então `/schedule` tem um formulário curto (nome, telefone, bairro, horário) com validação acessível no servidor (Zod), erro por campo, foco no primeiro erro e estado de sucesso com referência. A Server Action valida, gera a referência e registra o pedido no log do servidor em JSON, com a simulação e a campanha anexadas: é isso que responde a pergunta de segunda-feira do enunciado. Não há banco nem envio de e-mail.
-- Tabela de preço por tamanho de sistema, gerada da mesma fórmula do simulador (do mínimo da cidade até 41 painéis), renderizada no servidor. Responde a busca por custo de sistema sem inventar nenhum número.
-- Simulador em duas etapas: as duas perguntas ficam em cima (perfis à esquerda, controles à direita no desktop) e o orçamento embaixo, em largura total: os quatro números primeiro, os avisos, depois o desenho do telhado, as linhas de preço e a barra da conta lado a lado.
-- Celular primeiro: no simulador, uma faixa com os quatro números fica presa ao topo enquanto os controles estão na tela. Barra fixa inferior com a chamada para ação, que some enquanto a abertura ou o fechamento estão visíveis.
-- Animações: entrada escalonada na abertura, aparecer ao rolar em CSS puro, paralaxe nas fotos, números que transicionam. Tudo desliga com preferência por menos movimento.
+## Architecture decisions
 
-## Decisões de desenho
+- The calculation is a pure function used by the simulator, the FAQ, the metadata and the visit-request Server Action. FAQ answers use `{{tokens}}` instead of fixed numbers, so nothing on the page can disagree with the simulator.
+- Everything quotable is in the server HTML: hero, steps, crews, testimonials and FAQ (`<details>`). The simulator's default result is also rendered as a sentence.
+- Campaign attribution: UTM parameters and `gclid`/`fbclid` are kept in the session (first touch wins). Every event carries the city and the campaign. The "Request a site visit" link is built on click with the current simulation and the campaign. Events: `page_view`, `sim_started`, `sim_result` (debounced by 800 ms), `profile_selected`, `cta_click`, `booking_submitted`. No analytics provider has been chosen.
+- The visit request is a Server Action. The brief rules out scheduling and a back end, but the page's funnel ends in a request, so `/schedule` has a short form (name, phone, neighborhood, time) with accessible server-side validation (Zod), a per-field error, focus on the first error and a success state with a reference. The action validates, generates the reference and writes the request to the server log as JSON, with the simulation and the campaign attached. That is what answers the Monday question in the brief. There is no database and no email.
+- A price table by system size, generated from the same formula as the simulator (from the city minimum up to 41 panels) and rendered on the server. It answers the search for system cost without inventing a single number.
+- The simulator has two steps: the two questions on top (profiles on the left, controls on the right on desktop), and the estimate below at full width: the four figures first, then the notices, then the roof drawing, the price lines and the bill bar side by side.
+- Mobile first: in the simulator, a strip with the four figures sticks to the top while the controls are on screen. A fixed bottom bar carries the call to action and hides while the hero or the closing band is visible.
+- Animation: staggered entrance on the hero, scroll reveal in plain CSS, parallax on photos, numbers that transition. All of it turns off under reduced motion.
 
-A primeira implementação tinha cara de página gerada: ilustração em SVG feita à mão, três cartões iguais em cada seção, quatro caixas de número como resultado, rótulo em maiúsculas sobre todo título. A página foi refeita com estas regras:
+## Design decisions
 
-| Antes | Agora |
+The first implementation looked generated: a hand-drawn SVG illustration, three identical cards in every section, four number boxes as the result, an uppercase label over every title. The page was rebuilt with these rules:
+
+| Before | Now |
 |---|---|
-| Ilustração SVG na abertura | Fotografia real |
-| Três cartões iguais em passos, equipes e depoimentos | Linhas com fio, uma família de layout por seção |
-| Quatro caixas de número | Folha de orçamento: desenho do telhado, linhas de preço, resultado |
-| Azul, laranja, verde e lavados azul-claros | Um acento (laranja) sobre grafite e neutros claros, sem azul |
-| Abertura dividida, com cartão de prévia | Foto em tela cheia, título e chamada para ação sobre a foto, e os quatro números da cidade no pé |
-| Equipes só com iniciais | Foto por equipe, vinda do arquivo de dados |
-| Tema escuro automático (fundo azul-marinho) | Um tema só, claro |
-| Inter e Plus Jakarta Sans | Figtree, uma família só, com algarismos tabulares |
-| Raios de 10 e 16 px | Um raio único de 4 px |
+| SVG illustration in the hero | A real photograph |
+| Three identical cards in steps, crews and testimonials | Ruled rows, one layout family per section |
+| Four number boxes | An estimate sheet: roof drawing, price lines, result |
+| Blue, orange, green and light-blue washes | One accent (orange) over charcoal and light neutrals, no blue |
+| Split hero with a preview card | Full-bleed photo, title and call to action on it, the city's four numbers along the foot |
+| Crews with initials only | A photo per crew, from the data file |
+| Automatic dark theme (navy background) | A single, light theme |
+| Inter and Plus Jakarta Sans | Figtree, one family, with tabular figures |
+| 10 px and 16 px radii | A single 4 px radius |
 
-O desenho do telhado mostra um retângulo por painel. Quando o mínimo da cidade acrescenta painéis, eles aparecem hachurados, e a legenda diz quantos foram acrescentados. A barra da conta mostra o que o sol cobre, o que ainda vai para a distribuidora e o excedente que vira crédito.
+The roof drawing shows one rectangle per panel. When the city minimum adds panels, they are hatched and the caption says how many were added. The bill bar shows what solar covers, what still goes to the utility and the surplus that becomes credit.
 
-## Duas decisões investigadas
+## Two investigated decisions
 
-**1. O perfil de residência deve devolver a cobertura a 80%.**
-Eu tinha assumido que escolher um perfil só preenche a conta. Ao rodar a sequência do exemplo do enunciado no navegador, a quarta linha deu 9 painéis e US$ 7.796, não os 8 painéis e US$ 6.930 esperados. Motivo: a terceira linha deixa a cobertura em 100%, e um apartamento de US$ 90 a 100% pede 8,55 painéis, que arredondam para 9. A tabela só fecha se o perfil também volta a cobertura para 80%. Concluí que o perfil é um ponto de partida completo e implementei assim. As seis linhas do exemplo batem no navegador e num teste.
+**1. A household profile must reset coverage to 80%.**
+I had assumed that picking a profile only fills in the bill. Running the brief's example sequence in the browser, the fourth row gave 9 panels and $7,796, not the expected 8 panels and $6,930. The reason: the third row leaves coverage at 100%, and a $90 apartment at 100% needs 8.55 panels, which rounds up to 9. The table only holds if the profile also returns coverage to 80%. I concluded that a profile is a complete starting point and implemented it that way. The six rows of the example match in the browser and in a test.
 
-**2. A abertura e a cor vieram de referências abertas e estudadas.**
-Duas versões anteriores foram descartadas. A primeira era genérica. A segunda seguia o tema escuro do sistema, o que deixava a página azul-marinho, e tinha uma abertura dividida que não convencia. Abri e capturei as aberturas de Palmetto, Otovo, Sunrun, Enpal, Octopus Energy, Svea Solar, 1KOMMA5, Enphase e as buscas por "solar landing page" no Behance e no Dribbble (prints em `referencias/design/`). O que elas têm em comum: uma fotografia real ocupando a abertura inteira e página clara. Adotei os dois pontos. Cheguei a colocar o controle da conta de luz na abertura, como a Palmetto faz, mas tirei: a página ficava com duas calculadoras, e o enunciado pede a abertura com proposta e chamada para ação e o simulador como segunda parte. A fonte foi escolhida numa comparação lado a lado de seis famílias (`referencias/prints/fontes-*.jpg`). Conferi o contraste de todos os pares de cor (todos passam AA) e a página em 390 e 1440 px.
+**2. The hero and the color came from references that were opened and studied.**
+Two earlier versions were discarded. The first was generic. The second followed the system dark theme, which made the page navy, and had a split hero that did not convince. I opened and captured the heroes of Palmetto, Otovo, Sunrun, Enpal, Octopus Energy, Svea Solar, 1KOMMA5, Enphase and the "solar landing page" searches on Behance and Dribbble (captures in `references/design/`). What they share: a real photograph filling the whole hero, and a light page. I adopted both. I did try putting the electricity-bill control in the hero, as Palmetto does, but removed it: the page ended up with two calculators, and the brief asks for the hero to carry the proposition and a call to action, and for the simulator to be the second part. The font was chosen from a side-by-side comparison of six families (`references/screenshots/fonts-*.jpg`). I checked the contrast of every color pair (all pass AA) and the page at 390 and 1440 px.
 
-## Suposições
+## Assumptions
 
-- O ponto de partida do simulador é conta de US$ 220 e cobertura de 80%, como sugerido.
-- Mexer na cobertura quando o mínimo de painéis vale não muda o resultado. A página explica isso ao lado do controle, com a cobertura real que o mínimo produz.
-- O FAQ do arquivo tinha números fixos. Viraram campos preenchidos pelo cálculo.
-- `installDays` (1) é um campo novo nos dados, tirado do texto do FAQ.
-- Os dados não têm quantidade de avaliações. Por isso o JSON-LD não traz `aggregateRating`: o Google exige a contagem e inventar uma seria uma afirmação falsa.
-- O incentivo estadual aparece só como nota informativa e não entra na conta.
-- As fotos são do modelo, não da cidade. Para variar por cidade, o caminho da foto entraria no arquivo de dados.
-- As fotos das equipes são de banco de imagens, como o enunciado permite. Escolhi cada uma pelo tipo de telhado que a equipe faz, não pela aparência das pessoas. O campo `photo` é opcional; sem ele a página mostra as iniciais.
-- A página só afirma o que está nos dados. Não há menção a visita gratuita, garantia, licença, certificação, financiamento ou número de avaliações, porque o enunciado não traz nada disso.
-- O domínio é fictício (`NEXT_PUBLIC_SITE_URL`).
+- The simulator starts at a $220 bill and 80% coverage, as suggested.
+- Changing coverage while the panel minimum applies does not change the result. The page explains this next to the control, with the real coverage the minimum produces.
+- The FAQ in the brief had fixed numbers. They became fields filled in by the calculation.
+- `installDays` (1) is a new field in the data, taken out of the FAQ text.
+- The data has no review count. For that reason the JSON-LD has no `aggregateRating`: Google requires the count, and inventing one would be a false claim.
+- The state incentive appears only as an informational note and is not part of the calculation.
+- The photos belong to the template, not to the city. To vary them per city, the photo path would go into the data file.
+- The crew photos are stock images, as the brief allows. I chose each one by the roof type the crew works on, not by the look of the people. The `photo` field is optional; without it the page shows initials.
+- The page only states what is in the data. There is no mention of a free visit, warranty, license, certification, financing or number of reviews, because the brief gives none of that.
+- The page is published at a subdomain of my own studio (`brightfield.albseven.com`); the company itself is fictional. The address comes from `NEXT_PUBLIC_SITE_URL`.
 
-## Fotografias
+## Photographs
 
-Unsplash e Pexels, licenças de uso livre.
+Unsplash and Pexels, free-use licenses.
 
-| Arquivo | Origem |
+| File | Source |
 |---|---|
 | `hero-install.jpg` | Pexels, https://www.pexels.com/photo/9875418/ |
 | `steps-tile-roof.jpg` | https://unsplash.com/photos/hrIpsXkrAO0 |
@@ -122,25 +129,16 @@ Unsplash e Pexels, licenças de uso livre.
 | `public/images/crews/pitched-roof.jpg` | Pexels, https://www.pexels.com/photo/14613939/ |
 | `public/images/crews/flat-roof.jpg` | Pexels, https://www.pexels.com/photo/6158868/ |
 
-## Testes
+## Tests
 
-`src/lib/solar/calc.test.ts` protege o cálculo: as seis linhas do exemplo do enunciado, o limite da economia com o valor sem limite, o mínimo de painéis, o arredondamento para cima, a cobertura sem efeito, os extremos das faixas, uma segunda cidade fictícia (prova que nada está fixo no código) e o FAQ citando os mesmos números do simulador.
+`src/lib/solar/calc.test.ts` protects the calculation: the six rows of the brief's example, the savings cap against the uncapped value, the panel minimum, rounding up, coverage with no effect, the ends of the slider ranges, a second invented city (proving nothing is hard-coded) and the FAQ quoting the same numbers as the simulator.
 
-`src/sections/Simulator/__tests__/Simulator.test.tsx` protege o que aparece na tela nas três situações do enunciado: o aviso do limite da economia com os dois valores, o aviso do mínimo de painéis com o número pedido e o desenho marcando o painel acrescentado, e a nota de que baixar a cobertura não muda o resultado.
+`src/sections/Simulator/__tests__/Simulator.test.tsx` protects what appears on screen in the brief's three situations: the savings-cap notice with both values, the panel-minimum notice with the requested number and the drawing marking the added panel, and the note that lowering coverage does not change the result.
 
-## Auditoria
+## Audit
 
-Lighthouse 12 contra o build de produção em 30/09/2026, página de Phoenix: celular 93 de desempenho e 100 em acessibilidade, boas práticas e SEO; desktop 100 nas quatro categorias. O único ponto abaixo de 90 no celular é o LCP da foto da abertura (3,1 s com rede 4G simulada). O axe-core (WCAG 2.2 AA e boas práticas) não encontrou violação na página nem no formulário; os 20 itens marcados para revisão manual são textos sobre a fotografia da abertura, que ficam sobre um véu escuro para manter o contraste.
+Lighthouse 12 against the production build on 2026-09-30, Phoenix page: mobile 93 performance and 100 accessibility, best practices and SEO; desktop 100 in all four categories. The only mobile item below 90 is the LCP of the hero photo (3.1 s on simulated 4G). axe-core (WCAG 2.2 AA and best practices) found no violations on the page or the form; the 20 items flagged for manual review are text over the hero photograph, which sits on a dark veil to keep the contrast. The mobile LCP (3.1 s on simulated 4G) is not image weight: on the production build the hero photo is AVIF at 23 KB at 828 px, 35 KB at 1080 px and 84 KB at 1920 px, with `preload` and `srcset` in the HTML. While measuring I found that Next 16 only serves the qualities listed in `images.qualities` (default 75) and rewrites any other value, so the `quality` prop I was passing did nothing; I removed it. The layout was checked in Chromium.
 
-## O que ficou pendente
+## Use of AI
 
-- O LCP no celular pode cair com uma foto de abertura mais leve ou um CDN de imagens.
-- Não há provedor de analytics escolhido; os eventos estão prontos para receber um.
-- O pedido de visita fica só no log do servidor. Um e-mail ou CRM entraria na mesma Server Action.
-- Não há tema escuro. Foi uma escolha: a página escura passava menos confiança.
-- Uma segunda cidade real não foi criada. Os testes usam uma cidade fictícia com outros números.
-- Não foi testado em Safari nem em Firefox. Nesses navegadores o aparecer ao rolar pode não animar; o conteúdo fica visível do mesmo jeito.
-
-## Uso de IA
-
-O Claude Code ajudou a analisar concorrentes, propor a arquitetura e escrever o código. A primeira versão visual que ele produziu foi descartada por ser genérica, e a página foi refeita com as regras acima. O que foi conferido: o cálculo contra as seis linhas do exemplo (num teste e no navegador), o contraste das cores, o HTML do servidor, o layout em 390 e 1440 px e a ausência de rolagem horizontal.
+Claude Code helped analyze competitors, propose the architecture and write the code. I worked with it through short rule files in `.claude/skills/`, one per concern (data model, calculator, attribution, SEO, mobile and sharing, brand system), instead of one long prompt. The first visual version it produced was discarded as generic, and the page was rebuilt with the rules above. I did not accept its assumption about household profiles; I ran the brief's table in the browser and found the mismatch described above. What I checked: the calculation against the six rows (in a test and in the browser), color contrast, the server HTML, the layout at 390 and 1440 px with no horizontal scroll, Lighthouse on the production build and axe-core.

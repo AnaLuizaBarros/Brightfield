@@ -37,4 +37,4 @@ No back-end in this case. Use one `track(name, props)` function that logs to the
 No names, addresses or emails in events. Bill and coverage are fine. Respect Do Not Track and Global Privacy Control.
 
 ## Verify
-Open `/phoenix-az?utm_campaign=test&utm_content=ad-b`, move the slider, click the CTA. Every logged event carries `utm_content=ad-b` and `city=phoenix-az`.
+Open `/?utm_campaign=test&utm_content=ad-b`, move the slider, click the CTA. Every logged event carries `utm_content=ad-b` and `city=phoenix-az`.
