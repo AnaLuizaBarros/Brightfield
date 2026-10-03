@@ -4,6 +4,7 @@ A city page for a fictional solar installer, with Phoenix as the first city. One
 
 - **Case:** 09, city page for a solar installer
 - **Time spent:** about 3 hours (confirmed in WakaTime)
+- **Video walkthrough (English):** https://drive.google.com/file/d/1hcOtpE0l5KBZE1whYJfHa7v3utZyvqlG/view?usp=sharing
 - **Live page:** https://brightfield.albseven.com/
 - **Design:** https://www.figma.com/design/vnKv1AC4WRuosvYIXz3He2/Alvorada-Dev (a cover, the design history with the rejected versions, and the built page as one desktop frame) and 390 px and 1440 px captures in `references/screenshots/`
 - **Stack:** Next.js (App Router), React, TypeScript, SCSS (global + CSS Modules), Motion, Phosphor Icons, Zod, Vitest
